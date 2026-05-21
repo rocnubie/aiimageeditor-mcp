@@ -4,42 +4,23 @@ import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
 import { getPageBySlug } from "./site-content.mjs";
 
 export function createSiteServer(content) {
+  const namespace = content.namespace;
   const server = new McpServer(
     {
-      name: "minimal-site-mcp",
+      name: `${namespace}-site-mcp`,
       version: "0.1.0",
     },
     {
-      instructions:
-        "This server is read-only. Use it to understand the website, pricing, FAQ, and official links. " +
-        "Prefer the links page when you need canonical URLs.",
+      instructions: `Read-only canonical knowledge for ${content.site.name} (${content.site.websiteUrl}). Use resources for structured site context and tools for direct lookups. Refer users to the official website for live actions.`,
     }
   );
 
   server.registerResource(
-    "site-metadata",
-    "site://meta",
-    {
-      title: "Site Metadata",
-      description: "Official website metadata and canonical URLs.",
-      mimeType: "application/json",
-    },
-    async (uri) => ({
-      contents: [
-        {
-          uri: uri.href,
-          text: JSON.stringify(content.site, null, 2),
-        },
-      ],
-    })
-  );
-
-  server.registerResource(
     "site-page",
-    new ResourceTemplate("site://pages/{slug}", {
+    new ResourceTemplate(`site://${namespace}/{slug}`, {
       list: async () => ({
         resources: content.pages.map((page) => ({
-          uri: `site://pages/${page.slug}`,
+          uri: `site://${namespace}/${page.slug}`,
           name: page.title,
           description: page.description,
           mimeType: page.mimeType,
@@ -47,8 +28,8 @@ export function createSiteServer(content) {
       }),
     }),
     {
-      title: "Site Page",
-      description: "Read-only website content exposed as MCP resources.",
+      title: `${content.site.name} Page`,
+      description: `Read-only ${content.site.name} content exposed as MCP resources.`,
       mimeType: "text/markdown",
     },
     async (uri, { slug }) => {
@@ -69,6 +50,24 @@ export function createSiteServer(content) {
       };
     }
   );
+
+  for (const tool of content.tools) {
+    server.registerTool(
+      tool.name,
+      {
+        description: tool.description,
+        inputSchema: {},
+      },
+      async () => ({
+        content: [
+          {
+            type: "text",
+            text: tool.result.text,
+          },
+        ],
+      })
+    );
+  }
 
   return server;
 }
