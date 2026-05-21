@@ -8,8 +8,6 @@
 [![Read Only](https://img.shields.io/badge/server-read--only-2ea44f)](#tools)
 [![MCP](https://img.shields.io/badge/MCP-1.0-blue)](https://modelcontextprotocol.io)
 
-<p align="center"><a href="https://ai-image-editor.online"><img src="./assets/hero.webp" alt="AI Image Editor" width="720" /></a></p>
-
 A Model Context Protocol server that exposes the canonical AI Image Editor knowledge surface — image generation workflows and styles, pricing, FAQ, official links — to MCP-compatible AI clients such as Claude Desktop, Cursor, Windsurf, and Continue. Read-only, no API keys, no quota, ~50 ms cold start.
 
 Official website: https://ai-image-editor.online
