@@ -1,0 +1,12 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.rocnubie/aiimageeditor-mcp",
+  "title": "AI Image Editor MCP",
+  "description": "Best Image AI Editor free online. Free AI photo editor for picture & image editing.",
+  "version": "0.1.0",
+  "websiteUrl": "https://ai-image-editor.online",
+  "repository": {
+    "url": "https://github.com/rocnubie/aiimageeditor-mcp",
+    "source": "github"
+  }
+}
